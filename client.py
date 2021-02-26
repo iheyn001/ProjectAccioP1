@@ -1,6 +1,7 @@
-import sys, getopt, socket
+import sys, getopt, socket, selectors
 
 sock = socket.socket(family=AF_INET,type=SOCKET_STREAM)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 hostorip = ''
 port = 0   #initializing to number (changed later)
@@ -24,11 +25,28 @@ for opt, arg in opts:
     elif opt in ("-p", "--ifile"):
         fileName = arg
 
+
+sock.connect((hostorip,port)) #connects remote ip address and port
 sock.bind(hostorip, port)
+
+length = sock.send(b"accio\r\n")
+print("Send bytes", length)
 
 sock.listen(1)
 clientSocket, clientAddress = sock.accept()
 
+b = sock.recv(209715200)
+print("Received: '%s'", %b.decode('utf-8'))
+
+#send data to the port
+#data = clientSocket.recv(209715200)
+#if data:
+    #length = clientSocket.send(data)
+#else:
+    #exit
+
+clientSocket.close()
+sock.close()
 
 
 

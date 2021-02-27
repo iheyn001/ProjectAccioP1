@@ -1,7 +1,7 @@
 import sys, socket, re, selectors
 
 #Setting up the socket
-sock = socket.socket(AF_INET,SOCKET_STREAM)
+sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 #Variables we will be using in the client/server connection
@@ -11,7 +11,7 @@ fileName = ''
 
 #We now insert the command line arguments in their proper variable
 if len(sys.argv) < 4:   # for the program name, host, port, and file name
-    print 'You are missing a command line argument. You need the host name or IP, port number, and the name of the file you will transfer.'
+    print('You are missing a command line argument. You need the host name or IP, port number, and the name of the file you will transfer.')
     sys.exit(1)
 else:
     if 1 <= sys.argv[2] <= 65535:
@@ -28,10 +28,14 @@ sock.connect((hostorip,port)) #connects remote ip address and port
 length = sock.send(b"accio\r\n")
 print("Send bytes", length)
 
+
+
 b = sock.recv(209715200)
-print("Received: '%s'", %b.decode('utf-8'))
+print("Received: '%s'", b)
 
 
 
 clientSocket.close()
 sock.close()
+
+sys.exit(0)
